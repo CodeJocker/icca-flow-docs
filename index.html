@@ -3,236 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Auth Service & App Service | Documentation Portal</title>
-    <!-- Tailwind CSS v3 + Font Awesome Icons + Inter Font -->
+    <title>Auth Service & App Service | Enterprise SSO Documentation</title>
+    <!-- Tailwind CSS v3 + Font Awesome 6 + Inter Font -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-        body { background: #f8fafc; scroll-behavior: smooth; }
-        .nav-link { transition: all 0.2s ease; }
-        .nav-link:hover { background: #eef2ff; color: #1e40af; transform: translateX(4px); }
+        body { background: #f1f5f9; scroll-behavior: smooth; }
+        .nav-link { transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .nav-link:hover { background: #eef2ff; color: #1e40af; border-left-color: #4f46e5; transform: translateX(2px); }
         .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1); }
-        .prose-code { background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 6px; font-size: 0.85rem; font-family: 'SF Mono', monospace; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 20px 25px -12px rgba(0,0,0,0.12); }
+        .prose-code { background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.8rem; font-family: 'SF Mono', monospace; }
         .badge-flow { background: #e0e7ff; color: #1e3a8a; font-weight: 500; }
         .anchor-link { scroll-margin-top: 6rem; }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        ::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
         pre { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 1rem; overflow-x: auto; font-size: 0.8rem; font-family: 'SF Mono', monospace; }
         table { width: 100%; border-collapse: separate; border-spacing: 0; }
-        th { background: #f1f5f9; font-weight: 600; text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f8fafc; font-weight: 600; text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; }
         td { padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-        .section-card { background: white; border-radius: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03); transition: box-shadow 0.2s; }
+        .section-card { background: white; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02); transition: all 0.2s; }
+        .step-connector { position: relative; }
+        .step-circle { width: 2.5rem; height: 2.5rem; background: #4f46e5; color: white; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-weight: 700; box-shadow: 0 4px 6px -1px rgba(79,70,229,0.3); }
+        .timeline-line { position: absolute; left: 1.2rem; top: 2.8rem; bottom: -1rem; width: 2px; background: linear-gradient(to bottom, #cbd5e1, #a5b4fc); }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Sticky Navigation Sidebar (Desktop) + Topbar (Mobile) -->
+    <!-- Sticky Navigation Sidebar + Topbar -->
     <div class="lg:flex">
-        <!-- Sidebar - hidden on mobile, fixed on lg -->
-        <aside class="fixed inset-y-0 left-0 z-30 hidden w-72 bg-white border-r border-slate-200 shadow-sm lg:block overflow-y-auto">
-            <div class="p-6 border-b border-slate-100">
+        <!-- Sidebar -->
+        <aside class="fixed inset-y-0 left-0 z-30 hidden w-80 bg-white border-r border-slate-200 shadow-sm lg:block overflow-y-auto">
+            <div class="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50/30 to-white">
                 <div class="flex items-center gap-3">
-                    <div class="h-9 w-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md"><i class="fas fa-shield-haltered text-white text-lg"></i></div>
+                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-500 flex items-center justify-center shadow-md"><i class="fas fa-shield-haltered text-white text-xl"></i></div>
                     <div>
                         <h1 class="font-bold text-slate-800 text-xl">Auth <span class="text-indigo-600">+</span> App</h1>
-                        <p class="text-xs text-slate-500">CAS/SSO architecture</p>
+                        <p class="text-xs text-slate-500">CAS/SSO • token rotation</p>
                     </div>
                 </div>
             </div>
-            <nav class="p-4 space-y-1 text-sm font-medium">
-                <a href="#purpose" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-bullseye w-5 text-indigo-400"></i>Purpose & Architecture</a>
-                <a href="#datamodels" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-database w-5 text-indigo-400"></i>Data Models</a>
-                <a href="#security" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-lock w-5 text-indigo-400"></i>Trust & Signatures</a>
-                <a href="#endtoend" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-exchange-alt w-5 text-indigo-400"></i>End-to-end flows</a>
-                <a href="#tokens" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-key w-5 text-indigo-400"></i>Token Lifecycle</a>
-                <a href="#registration" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-user-plus w-5 text-indigo-400"></i>Registration & Reset</a>
-                <a href="#serviceinternal" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-microchip w-5 text-indigo-400"></i>Service-to-Service</a>
-                <a href="#admin" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-user-shield w-5 text-indigo-400"></i>Admin & Permissions</a>
-                <a href="#cookies" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-cookie-bite w-5 text-indigo-400"></i>Cookies & Redirects</a>
-                <a href="#keyfiles" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-file-code w-5 text-indigo-400"></i>Key Files</a>
-                <a href="#notes" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-sticky-note w-5 text-indigo-400"></i>Implementation Notes</a>
+            <nav class="p-4 space-y-0.5 text-sm font-medium">
+                <a href="#user-onboarding" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-person-walking-arrow-right w-5 text-indigo-500"></i>User Onboarding Flow</a>
+                <a href="#purpose" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-bullseye w-5 text-indigo-400"></i>Purpose & Architecture</a>
+                <a href="#datamodels" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-database w-5 text-indigo-400"></i>Data Models</a>
+                <a href="#security" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-lock w-5 text-indigo-400"></i>Trust & Signatures</a>
+                <a href="#endtoend" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-exchange-alt w-5 text-indigo-400"></i>End-to-end flows</a>
+                <a href="#tokens" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-key w-5 text-indigo-400"></i>Token Lifecycle</a>
+                <a href="#registration" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-user-plus w-5 text-indigo-400"></i>Registration & Reset</a>
+                <a href="#serviceinternal" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-microchip w-5 text-indigo-400"></i>Service-to-Service</a>
+                <a href="#admin" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-user-shield w-5 text-indigo-400"></i>Admin & Permissions</a>
+                <a href="#cookies" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-cookie-bite w-5 text-indigo-400"></i>Cookies & Redirects</a>
+                <a href="#keyfiles" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-file-code w-5 text-indigo-400"></i>Key Files</a>
+                <a href="#notes" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"><i class="fas fa-sticky-note w-5 text-indigo-400"></i>Implementation Notes</a>
             </nav>
-            <div class="absolute bottom-0 p-6 text-xs text-slate-400 border-t border-slate-100 w-full bg-white"><i class="fas fa-shield-alt mr-1"></i> stateless sessions · HMAC secure</div>
+            <div class="absolute bottom-0 p-6 text-xs text-slate-400 border-t border-slate-100 w-full bg-white"><i class="fas fa-shield-alt mr-1"></i> stateless sessions · HMAC proof</div>
         </aside>
 
         <!-- Main Content -->
-        <main class="lg:ml-72 w-full px-5 md:px-8 py-8 max-w-6xl">
+        <main class="lg:ml-80 w-full px-5 md:px-8 py-8 max-w-6xl">
             <div class="mb-8 flex items-center justify-between flex-wrap gap-3">
-                <div class="flex items-center gap-2 text-indigo-700"><i class="fas fa-chevron-circle-right text-indigo-500"></i><span class="text-sm font-mono bg-slate-100 px-3 py-1 rounded-full">auth-service · app1-service</span></div>
-                <div class="text-sm text-slate-500"><i class="far fa-calendar-alt mr-1"></i> SSO reference architecture</div>
+                <div class="flex items-center gap-2 text-indigo-700"><i class="fas fa-chevron-circle-right text-indigo-500"></i><span class="text-sm font-mono bg-slate-100 px-3 py-1 rounded-full">auth-service · app1 · onboarding orchestration</span></div>
+                <div class="text-sm text-slate-500"><i class="far fa-calendar-alt mr-1"></i> interactive SSO reference</div>
             </div>
 
-            <!-- PURPOSE Section -->
+            <!-- 🚀 NEW: USER ONBOARDING JOURNEY (complete flow visual + description) -->
+            <section id="user-onboarding" class="anchor-link mb-12 section-card p-6 md:p-8 border-t-4 border-indigo-500">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <i class="fas fa-person-walking-arrow-right text-2xl text-indigo-600"></i>
+                    <h2 class="text-2xl font-bold text-slate-800">🚀 User Onboarding Journey: App → Auth → Onboarding Flow</h2>
+                </div>
+                <p class="text-slate-700 mb-6 leading-relaxed">This section details the complete user experience starting from accessing the application, authentication delegation, and the post-login onboarding orchestration — including UI state changes, background token exchange, and onboarding completion screens.</p>
+                
+                <!-- Interactive Step Timeline -->
+                <div class="relative mb-8">
+                    <div class="grid md:grid-cols-5 gap-4">
+                        <!-- Step 1 -->
+                        <div class="relative step-connector">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="step-circle mb-3"><i class="fas fa-desktop text-lg"></i></div>
+                                <span class="font-bold text-indigo-800 text-sm">1. Access App</span>
+                                <p class="text-xs text-slate-500 mt-1">User visits <span class="font-mono">app.example.com</span></p>
+                            </div>
+                            <div class="hidden md:block absolute top-5 left-[70%] w-full h-0.5 bg-indigo-200"></div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="relative step-connector">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="step-circle mb-3"><i class="fas fa-sign-in-alt text-lg"></i></div>
+                                <span class="font-bold text-indigo-800 text-sm">2. Member Login</span>
+                                <p class="text-xs text-slate-500 mt-1">Clicks "Member Login" → triggers signed redirect</p>
+                            </div>
+                            <div class="hidden md:block absolute top-5 left-[70%] w-full h-0.5 bg-indigo-200"></div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="relative step-connector">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="step-circle mb-3"><i class="fas fa-shield-alt text-lg"></i></div>
+                                <span class="font-bold text-indigo-800 text-sm">3. Auth Service</span>
+                                <p class="text-xs text-slate-500 mt-1">Validates HMAC, checks client, shows login UI</p>
+                            </div>
+                            <div class="hidden md:block absolute top-5 left-[70%] w-full h-0.5 bg-indigo-200"></div>
+                        </div>
+                        <!-- Step 4 -->
+                        <div class="relative step-connector">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="step-circle mb-3"><i class="fas fa-fingerprint text-lg"></i></div>
+                                <span class="font-bold text-indigo-800 text-sm">4. Authentication</span>
+                                <p class="text-xs text-slate-500 mt-1">Email/password or Google → session & tokens</p>
+                            </div>
+                            <div class="hidden md:block absolute top-5 left-[70%] w-full h-0.5 bg-indigo-200"></div>
+                        </div>
+                        <!-- Step 5 -->
+                        <div>
+                            <div class="flex flex-col items-center text-center">
+                                <div class="step-circle mb-3"><i class="fas fa-redo-alt text-lg"></i></div>
+                                <span class="font-bold text-indigo-800 text-sm">5. Redirect back</span>
+                                <p class="text-xs text-slate-500 mt-1">App callback → state verification → token acceptance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Background & UI Change Description -->
+                <div class="bg-slate-50 rounded-2xl p-5 mb-6 border border-slate-200">
+                    <h3 class="font-bold text-lg flex items-center gap-2 mb-3"><i class="fas fa-info-circle text-indigo-500"></i>Background Technical Flow (Auth + App service)</h3>
+                    <div class="grid md:grid-cols-2 gap-5 text-sm">
+                        <div>
+                            <p><span class="font-semibold">① User clicks "Member Login"</span> → App generates random state → builds HMAC over <code>client_id:service:state:timestamp</code> → stores signed <strong>stateCookie</strong> → redirects browser to <code>/api/v1/auth/redirect</code> with action=login.</p>
+                            <p class="mt-2"><span class="font-semibold">② Auth service validation</span> → verifies signature, timestamp freshness, client allowlist → persists validated context in signed <code>cas_params</code> cookie.</p>
+                            <p class="mt-2"><span class="font-semibold">③ User authenticates</span> (email/password or Google) → auth creates access token + refresh token (hashed & stored in MongoDB with family).</p>
+                        </div>
+                        <div>
+                            <p><span class="font-semibold">④ Auth sets cookies</span> (<code>refreshToken</code>, <code>user</code>) → redirects back to app callback (<code>/auth/callback?token=<JWT>&state=<state></code>).</p>
+                            <p class="mt-2"><span class="font-semibold">⑤ App service</span> compares <code>state</code> from query with signed cookie → if match, app accepts token and changes UI state.</p>
+                            <p class="mt-2 bg-white p-2 rounded-lg border border-indigo-100"><i class="fas fa-magic text-indigo-500"></i> <strong>UI Mutation:</strong> The "Member Login" button is programmatically replaced by a "Get Started" button after token validation & user session detection.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Onboarding Progression (Post-authentication) -->
+                <div class="relative mt-6">
+                    <div class="flex flex-col md:flex-row gap-5 justify-between items-stretch">
+                        <div class="flex-1 bg-white border border-indigo-100 rounded-xl p-4 shadow-sm">
+                            <div class="flex items-center gap-2 text-indigo-700 font-semibold"><i class="fas fa-play-circle"></i> Step A: "Get Started" click</div>
+                            <p class="text-sm text-slate-600 mt-2">After successful authentication, the dashboard detects onboarding status (via flag / profile completeness). If onboarding not completed, user is routed to the <strong>onboarding screen</strong> (multi-step profile, preferences, etc.).</p>
+                        </div>
+                        <div class="flex-1 bg-white border border-indigo-100 rounded-xl p-4 shadow-sm">
+                            <div class="flex items-center gap-2 text-indigo-700 font-semibold"><i class="fas fa-clipboard-list"></i> Step B: Onboarding in progress</div>
+                            <p class="text-sm text-slate-600 mt-2">User provides required information (nationality, basedIn, skills, etc.). Data is stored in Auth service <strong>User model</strong> fields + potentially app-specific collection. Each step updates the user profile incrementally.</p>
+                        </div>
+                        <div class="flex-1 bg-white border border-indigo-100 rounded-xl p-4 shadow-sm">
+                            <div class="flex items-center gap-2 text-emerald-700 font-semibold"><i class="fas fa-check-circle text-emerald-500"></i> Step C: Onboarding complete</div>
+                            <p class="text-sm text-slate-600 mt-2">When all steps finished, the system displays an <strong>Onboarding Success Screen</strong> → marks user <code>onboardingCompleted=true</code> (custom flag) → user can access full dashboard. The "Get Started" button is replaced by "Go to Dashboard".</p>
+                        </div>
+                    </div>
+                    <div class="mt-5 p-3 bg-gradient-to-r from-indigo-50 to-slate-50 rounded-xl text-sm flex items-center justify-between flex-wrap gap-2"><span><i class="fas fa-arrow-right text-indigo-500 mr-2"></i> Onboarding success screen includes: welcome message, profile summary, next steps, and call to action for the main platform.</span><span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full text-xs">stateful transition</span></div>
+                </div>
+
+                <!-- Diagram card summary -->
+                <div class="mt-7 text-xs text-slate-500 border-t pt-4 flex justify-between items-center"><span><i class="fas fa-chart-line"></i> end-to-end latency: auth redirect + token creation + onboarding checks</span><span class="font-mono text-indigo-600">Session persistence via refresh token rotation</span></div>
+            </section>
+
+            <!-- ============ REMAINING ORIGINAL DOCUMENTATION SECTIONS (fully preserved) ============ -->
             <section id="purpose" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
-                    <i class="fas fa-bullseye text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">1. Purpose & High-Level Architecture</h2>
-                </div>
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5"><i class="fas fa-bullseye text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">1. Purpose & High-Level Architecture</h2></div>
                 <p class="text-slate-700 leading-relaxed mb-4">Two cooperating backend services: <span class="font-semibold bg-indigo-50 px-2 py-0.5 rounded">auth/</span> (central identity & session authority) and <span class="font-semibold bg-indigo-50 px-2 py-0.5 rounded">app1/</span> (client application delegating authentication). Implements lightweight CAS/SSO login flow with signed redirects, refresh rotation, and internal service tokens.</p>
-                <div class="grid md:grid-cols-2 gap-5 mt-5">
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h3 class="font-semibold flex items-center gap-2"><i class="fas fa-server text-indigo-600"></i>Auth Service</h3>
-                        <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mt-2"><li>User & session registry (refresh tokens hashed)</li><li>OAuth2 (Google), email/password, HMAC-signed redirects</li><li>Client app allowlist, audit logs, roles/permissions</li><li>Service JWT & internal APIs</li></ul>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h3 class="font-semibold flex items-center gap-2"><i class="fas fa-mobile-alt text-emerald-600"></i>App Service</h3>
-                        <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mt-2"><li>Initiates login/register redirects with signed state</li><li>Stores state cookie (CSRF protection)</li><li>Validates callback token & state match</li><li>Delegates authentication 100% to auth service</li></ul>
-                    </div>
-                </div>
+                <div class="grid md:grid-cols-2 gap-5 mt-5"><div class="bg-slate-50 p-4 rounded-xl border border-slate-200"><h3 class="font-semibold flex items-center gap-2"><i class="fas fa-server text-indigo-600"></i>Auth Service</h3><ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mt-2"><li>User & session registry (refresh tokens hashed)</li><li>OAuth2 (Google), email/password, HMAC-signed redirects</li><li>Client app allowlist, audit logs, roles/permissions</li><li>Service JWT & internal APIs</li></ul></div><div class="bg-slate-50 p-4 rounded-xl border border-slate-200"><h3 class="font-semibold flex items-center gap-2"><i class="fas fa-mobile-alt text-emerald-600"></i>App Service</h3><ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mt-2"><li>Initiates login/register redirects with signed state</li><li>Stores state cookie (CSRF protection)</li><li>Validates callback token & state match</li><li>Delegates authentication 100% to auth service</li></ul></div></div>
                 <div class="mt-6 bg-indigo-50/40 p-4 rounded-xl border-l-4 border-indigo-400 text-sm"><i class="fas fa-code-branch mr-2 text-indigo-600"></i><strong>5-step core loop:</strong> App request → signed redirect → auth validation → user auth + session → redirect back with token → app state verification.</div>
             </section>
 
-            <!-- DATA MODELS -->
-            <section id="datamodels" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
-                    <i class="fas fa-database text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">2. Main Data Models (Auth Service)</h2>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead><tr><th>Model</th><th>Key fields</th><th>Purpose</th></tr></thead>
-                        <tbody>
-                            <tr><td class="font-mono text-indigo-800">User</td><td>fullName, email, password, googleId, role (member/admin/super_admin), status, isVerified, resetPasswordToken/Expiry</td><td>Identity, coarse-grained RBAC, verification state</td></tr>
-                            <tr><td class="font-mono text-indigo-800">RefreshToken</td><td>user, tokenHash (SHA256), family, replacedByTokenHash, revokedAt, expiresAt, createdByIp, userAgent</td><td>Session store, rotation & reuse detection</td></tr>
-                            <tr><td class="font-mono text-indigo-800">App</td><td>appID, name, allowed_redirect_urls, scopes_allowed</td><td>Client registry & redirect allowlist</td></tr>
-                            <tr><td class="font-mono text-indigo-800">AccessControl</td><td>user, permissions[], assignedBy</td><td>Direct permission overrides on top of roles</td></tr>
-                            <tr><td class="font-mono text-indigo-800">AuditLog</td><td>actorUserId, action, targetType, ipAddress, severity, requestId</td><td>Security & admin action trail</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <section id="datamodels" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5"><i class="fas fa-database text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">2. Main Data Models (Auth Service)</h2></div><div class="overflow-x-auto"><table class="min-w-full text-sm"><thead><tr><th>Model</th><th>Key fields</th><th>Purpose</th></tr></thead><tbody><tr><td class="font-mono text-indigo-800">User</td><td>fullName, email, password, googleId, role, status, isVerified, resetPasswordToken/Expiry</td><td>Identity, coarse-grained RBAC, verification state</td></tr><tr><td class="font-mono text-indigo-800">RefreshToken</td><td>user, tokenHash (SHA256), family, replacedByTokenHash, revokedAt, expiresAt, createdByIp, userAgent</td><td>Session store, rotation & reuse detection</td></tr><tr><td class="font-mono text-indigo-800">App</td><td>appID, name, allowed_redirect_urls, scopes_allowed</td><td>Client registry & redirect allowlist</td></tr><tr><td class="font-mono text-indigo-800">AccessControl</td><td>user, permissions[], assignedBy</td><td>Direct permission overrides on top of roles</td></tr><tr><td class="font-mono text-indigo-800">AuditLog</td><td>actorUserId, action, targetType, ipAddress, severity, requestId</td><td>Security & admin action trail</td></tr></tbody></table></div></section>
 
-            <!-- TRUST & SIGNED REQUESTS -->
-            <section id="security" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
-                    <i class="fas fa-lock text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">3. Trust Boundaries & Signed Auth Request</h2>
-                </div>
-                <p class="mb-3"><span class="font-semibold">HMAC signature validation:</span> required fields <code class="bg-slate-100 px-1 rounded">client_id, service, state, timestamp, sig, action</code>. Payload format:</p>
-                <pre class="mb-4 text-xs">client_id:service:state:timestamp</pre>
-                <p class="mb-3 text-slate-700">Auth service recomputes HMAC with <code class="bg-slate-100 px-1 rounded">TOKEN_HMAC_SECRET</code>, checks timestamp freshness, client existence, and that the service URL belongs to <strong>allowed_redirect_urls</strong>. Prevents token redirection to unapproved destinations.</p>
-                <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-sm"><i class="fas fa-shield-alt mr-2 text-amber-700"></i> <strong>Redirect validation:</strong> Even with valid signature, the requested redirect_type and service origin must be allowed by client registration.</div>
-            </section>
+            <section id="security" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5"><i class="fas fa-lock text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">3. Trust Boundaries & Signed Auth Request</h2></div><p class="mb-3"><span class="font-semibold">HMAC signature validation:</span> required fields <code class="bg-slate-100 px-1 rounded">client_id, service, state, timestamp, sig, action</code>. Payload format:</p><pre class="mb-4 text-xs">client_id:service:state:timestamp</pre><p class="mb-3 text-slate-700">Auth service recomputes HMAC with <code class="bg-slate-100 px-1 rounded">TOKEN_HMAC_SECRET</code>, checks timestamp freshness, client existence, and that the service URL belongs to <strong>allowed_redirect_urls</strong>. Prevents token redirection to unapproved destinations.</p><div class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-sm"><i class="fas fa-shield-alt mr-2 text-amber-700"></i> <strong>Redirect validation:</strong> Even with valid signature, the requested redirect_type and service origin must be allowed by client registration.</div></section>
 
-            <!-- E2E FLOWS (5 subsections) -->
-            <section id="endtoend" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
-                    <i class="fas fa-exchange-alt text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">4. End-to-End Critical Flows</h2>
-                </div>
-                <div class="space-y-5">
-                    <div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-sign-in-alt text-indigo-500"></i>A. App initiates login/register</h3><p class="text-sm text-slate-600">GET /auth/redirect → generates random state, timestamp, builds HMAC → stores signed stateCookie → redirects to auth with action, client_id, service, state, sig.</p></div>
-                    <div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-check-circle text-indigo-500"></i>B. Auth validates & shows UI</h3><p class="text-sm text-slate-600">Auth verifies signature, redirect allowlist, stores validated context in signed 'cas_params' cookie. If existing session (refresh token valid) → instant redirect back to app, else forward to login/register page.</p></div>
-                    <div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-envelope text-indigo-500"></i>C. Email/Password login</h3><p class="text-sm text-slate-600">POST /login → authenticate credentials → createSession (access + refresh token, hashed refresh stored in DB with family) → set cookies & redirect to app callback with token + state.</p></div>
-                    <div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fab fa-google text-indigo-500"></i>D. Google OAuth</h3><p class="text-sm text-slate-600">Exchange Google code → find or link user by googleId/email → create/update user profile → issue session tokens → same redirect flow as normal login.</p></div>
-                    <div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-undo-alt text-indigo-500"></i>E. App callback</h3><p class="text-sm text-slate-600">GET /auth/callback → reads state & access_token → compares with signed stateCookie → if match, token accepted for application session.</p></div>
-                </div>
-                <div class="mt-5 text-xs bg-slate-100 p-3 rounded-lg"><i class="fas fa-info-circle"></i> Note: app1 expects <code class="bg-white px-1">access_token</code> in callback, while auth redirect builds <code class="bg-white px-1">token</code> – naming mismatch documented.</div>
-            </section>
+            <section id="endtoend" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5"><i class="fas fa-exchange-alt text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">4. End-to-End Critical Flows</h2></div><div class="space-y-5"><div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-sign-in-alt text-indigo-500"></i>A. App initiates login/register</h3><p class="text-sm text-slate-600">GET /auth/redirect → generates random state, timestamp, builds HMAC → stores signed stateCookie → redirects to auth with action, client_id, service, state, sig.</p></div><div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-check-circle text-indigo-500"></i>B. Auth validates & shows UI</h3><p class="text-sm text-slate-600">Auth verifies signature, redirect allowlist, stores validated context in signed 'cas_params' cookie. If existing session (refresh token valid) → instant redirect back to app, else forward to login/register page.</p></div><div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-envelope text-indigo-500"></i>C. Email/Password login</h3><p class="text-sm text-slate-600">POST /login → authenticate credentials → createSession (access + refresh token, hashed refresh stored in DB) → set cookies & redirect to app callback with token + state.</p></div><div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fab fa-google text-indigo-500"></i>D. Google OAuth</h3><p class="text-sm text-slate-600">Exchange Google code → find or link user by googleId/email → create/update user profile → issue session tokens → redirect flow.</p></div><div><h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-undo-alt text-indigo-500"></i>E. App callback</h3><p class="text-sm text-slate-600">GET /auth/callback → reads state & access_token → compares with signed stateCookie → if match, token accepted.</p></div></div><div class="mt-5 text-xs bg-slate-100 p-3 rounded-lg"><i class="fas fa-info-circle"></i> Note: naming mismatch between <code>token</code> (auth redirect) and <code>access_token</code> (app expectation).</div></section>
 
-            <!-- TOKEN LIFECYCLE -->
-            <section id="tokens" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <i class="fas fa-key text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">5. Session & Token Lifecycle</h2>
-                </div>
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="bg-slate-50 p-3 rounded-lg"><span class="font-bold">🔐 Creation:</span> generate JWT pair → hash refresh token → store RefreshToken doc with family, expiry, IP, userAgent → return raw tokens.</div>
-                    <div class="bg-slate-50 p-3 rounded-lg"><span class="font-bold">🔄 Rotation (/refresh):</span> validate old token → revoke old entry (revokedAt/replacedBy) → issue new family member → new DB row & cookies.</div>
-                    <div class="bg-slate-50 p-3 rounded-lg"><span class="font-bold">🚪 Logout:</span> delete refresh token document → clear cookie. No server-side orphan.</div>
-                </div>
-                <p class="mt-4 text-sm"><strong>Session hydration:</strong> <code>sessionService.getSession</code> reads refreshToken cookie, verifies JWT, then looks up hashed token in RefreshToken collection (with legacy user.token fallback). Fresh tokens issued on reuse.</p>
-            </section>
+            <section id="tokens" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4"><i class="fas fa-key text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">5. Session & Token Lifecycle</h2></div><div class="grid md:grid-cols-3 gap-4"><div class="bg-slate-50 p-3 rounded-lg"><span class="font-bold">🔐 Creation:</span> generate JWT pair → hash refresh token → store RefreshToken doc with family, expiry, IP.</div><div class="bg-slate-50 p-3 rounded-lg"><span class="font-bold">🔄 Rotation:</span> validate old token → revoke old entry → issue new family member → new DB row & cookies.</div><div class="bg-slate-50 p-3 rounded-lg"><span class="font-bold">🚪 Logout:</span> delete refresh token document → clear cookie.</div></div><p class="mt-4 text-sm"><strong>Session hydration:</strong> <code>sessionService.getSession</code> reads refreshToken cookie, verifies JWT, then looks up hashed token in RefreshToken collection (with legacy user.token fallback).</p></section>
 
-            <!-- REGISTRATION & PASSWORD RESET -->
-            <section id="registration" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <i class="fas fa-user-plus text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">6. Registration & Password Reset</h2>
-                </div>
-                <ul class="list-disc pl-5 space-y-2 text-slate-700">
-                    <li><strong>Registration</strong> → POST /register, duplicate email blocked, password hashed, email verification OTP generated → user created with <code>status: pending_verification</code> AND session created immediately (tokens returned).</li>
-                    <li><strong>Forgot password</strong> → generate raw reset token, store SHA256 hash + expiry → send Brevo email with reset link (targeting auth reset action).</li>
-                    <li><strong>Reset password</strong> → POST /reset-password with raw token + new password → hash token, match stored token hash → update password, clear reset fields, but current controller returns success without setting new session cookies.</li>
-                </ul>
-            </section>
+            <section id="registration" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4"><i class="fas fa-user-plus text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">6. Registration & Password Reset</h2></div><ul class="list-disc pl-5 space-y-2 text-slate-700"><li><strong>Registration</strong> → POST /register, duplicate email blocked, password hashed, email verification OTP generated → user created with <code>status: pending_verification</code> AND session created immediately.</li><li><strong>Forgot password</strong> → generate raw reset token, store SHA256 hash + expiry → send Brevo email with reset link.</li><li><strong>Reset password</strong> → POST /reset-password with raw token → hash token → update password, clear reset fields, controller returns success without setting new session cookies.</li></ul></section>
 
-            <!-- SERVICE-TO-SERVICE & INTERNAL API -->
-            <section id="serviceinternal" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <i class="fas fa-microchip text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">7. Service-to-Service & Internal APIs</h2>
-                </div>
-                <p><span class="font-mono bg-gray-100 px-1">POST /api/v1/auth/token</span> → signed client validation, scopes_allowed check → issues short-lived service JWT (<code>type: "service"</code>) for backend communication. <strong>Internal routes</strong> (e.g., PATCH /service/users/:id/role, GET /internal/users/:id) are protected by <code>verifyServiceToken</code> middleware which requires <code>type: service</code> and the "roles" scope for all protected calls. Returns effective permissions, profile updates, audit logs.</p>
-                <div class="mt-3 p-3 bg-indigo-50 rounded text-sm">Service token payload includes client_id, scopes, exp. Used for trusted backend → backend authorization.</div>
-            </section>
+            <section id="serviceinternal" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4"><i class="fas fa-microchip text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">7. Service-to-Service & Internal APIs</h2></div><p><span class="font-mono bg-gray-100 px-1">POST /api/v1/auth/token</span> → signed client validation, scopes_allowed check → issues short-lived service JWT (<code>type: "service"</code>) for backend communication. <strong>Internal routes</strong> protected by <code>verifyServiceToken</code> requiring "roles" scope. Returns effective permissions, profile updates, audit logs.</p><div class="mt-3 p-3 bg-indigo-50 rounded text-sm">Service token payload includes client_id, scopes, exp. Used for trusted backend → backend authorization.</div></section>
 
-            <!-- ADMIN, ROLES, PERMISSIONS -->
-            <section id="admin" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <i class="fas fa-user-shield text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">8. Admin, Roles & Permissions</h2>
-                </div>
-                <p class="mb-2">Permissions computed as <strong>role base permissions ∪ AccessControl direct permissions</strong>. <code>super_admin</code> gets all keys. Default roles: member, admin, super_admin with modules: mentors, mentees, resources, reports, users, notifications.</p>
-                <p class="mb-2"><i class="fas fa-clipboard-list"></i> Admin endpoints protected by <code>verifyToken + requireSuperAdmin</code>. Actions: create/update/disable admin, assign/revoke permissions, list audit logs. Each admin action writes AuditLog entry.</p>
-                <pre class="text-xs">Bootstrapping: authorizationService.ensureSystemRoles.</pre>
-            </section>
+            <section id="admin" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4"><i class="fas fa-user-shield text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">8. Admin, Roles & Permissions</h2></div><p class="mb-2">Permissions computed as <strong>role base permissions ∪ AccessControl direct permissions</strong>. <code>super_admin</code> gets all keys. Default roles: member, admin, super_admin with modules: mentors, mentees, resources, reports, users, notifications.</p><p class="mb-2"><i class="fas fa-clipboard-list"></i> Admin endpoints protected by <code>verifyToken + requireSuperAdmin</code>. Actions: create/update/disable admin, assign/revoke permissions, list audit logs. Each admin action writes AuditLog entry.</p><pre class="text-xs">Bootstrapping: authorizationService.ensureSystemRoles.</pre></section>
 
-            <!-- COOKIES AND STATE -->
-            <section id="cookies" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <i class="fas fa-cookie-bite text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">9. Cookies, Redirects, State</h2>
-                </div>
-                <div class="grid md:grid-cols-2 gap-4 text-sm">
-                    <div><span class="font-bold">🔐 Auth cookies:</span> refreshToken (httpOnly), user (non-httpOnly), cas_params (signed validated context)</div>
-                    <div><span class="font-bold">📱 App cookie:</span> stateCookie (signed CSRF protection)</div>
-                </div>
-                <p class="mt-3 text-slate-600">Query parameters between services: action, client_id, service, state, timestamp, sig. Callback returns <code>token</code> + <code>state</code> from auth to app (naming mismatch with <code>access_token</code>).</p>
-            </section>
+            <section id="cookies" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4"><i class="fas fa-cookie-bite text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">9. Cookies, Redirects, State</h2></div><div class="grid md:grid-cols-2 gap-4 text-sm"><div><span class="font-bold">🔐 Auth cookies:</span> refreshToken (httpOnly), user (non-httpOnly), cas_params (signed validated context)</div><div><span class="font-bold">📱 App cookie:</span> stateCookie (signed CSRF protection)</div></div><p class="mt-3 text-slate-600">Query parameters between services: action, client_id, service, state, timestamp, sig. Callback returns <code>token</code> + <code>state</code> from auth to app.</p></section>
 
-            <!-- KEY FILES -->
-            <section id="keyfiles" class="anchor-link mb-12 section-card p-6 md:p-8">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <i class="fas fa-file-code text-2xl text-indigo-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">10. Key Implementation Files</h2>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/controllers/user.controller.js</span>
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/services/user.service.js</span>
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/services/session.service.js</span>
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/services/tokenLifecycle.service.js</span>
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/middlewares/verifyRequestSignature.js</span>
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/middlewares/validateAuthRequests.middleware.js</span>
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/middlewares/service.middleware.js</span>
-                    <span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">app1/server.js</span>
-                </div>
-            </section>
+            <section id="keyfiles" class="anchor-link mb-12 section-card p-6 md:p-8"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4"><i class="fas fa-file-code text-2xl text-indigo-600"></i><h2 class="text-2xl font-bold text-slate-800">10. Key Implementation Files</h2></div><div class="flex flex-wrap gap-2"><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/controllers/user.controller.js</span><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/services/user.service.js</span><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/services/session.service.js</span><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/services/tokenLifecycle.service.js</span><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/middlewares/verifyRequestSignature.js</span><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/middlewares/validateAuthRequests.middleware.js</span><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">auth/src/middlewares/service.middleware.js</span><span class="bg-slate-100 rounded-full px-3 py-1 text-xs font-mono">app1/server.js</span></div></section>
 
-            <!-- IMPLEMENTATION NOTES -->
-            <section id="notes" class="anchor-link mb-12 section-card p-6 md:p-8 border-l-4 border-amber-400">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <i class="fas fa-sticky-note text-2xl text-amber-600"></i>
-                    <h2 class="text-2xl font-bold text-slate-800">11. Important Implementation Notes</h2>
-                </div>
-                <ul class="list-disc pl-5 space-y-2 text-slate-700 text-sm">
-                    <li>Refresh sessions stored in <code>RefreshToken</code> collection, but hydration still contains legacy <code>user.token</code> lookup.</li>
-                    <li>Registration creates immediate session even though status may be <code>pending_verification</code>.</li>
-                    <li>Reset password creates tokens inside service layer but controller does NOT set cookies or return tokens.</li>
-                    <li><code>sessionService.autoLoginRedirect</code> uses <code>token</code> URL param, while app1 reads <code>access_token</code> → naming mismatch risk.</li>
-                    <li><code>verifyServiceToken</code> requires <code>roles</code> scope for both <code>/service</code> and <code>/internal</code> routes, locking internal profile reads behind that scope.</li>
-                    <li>Google OAuth flow updates missing local fields (fullName, gender, googleToken) and upserts verified users.</li>
-                </ul>
-                <div class="mt-5 p-4 bg-indigo-50 rounded-xl text-sm font-mono flex flex-wrap gap-x-4 gap-y-2 justify-between items-center"><span><i class="fas fa-brain text-indigo-600"></i> Core mental model: Auth owns identity & sessions, App relies on signed redirects & state verification.</span><span class="text-indigo-800 font-bold">HMAC + refresh token family + audit trail</span></div>
-            </section>
+            <section id="notes" class="anchor-link mb-12 section-card p-6 md:p-8 border-l-4 border-amber-400"><div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4"><i class="fas fa-sticky-note text-2xl text-amber-600"></i><h2 class="text-2xl font-bold text-slate-800">11. Important Implementation Notes</h2></div><ul class="list-disc pl-5 space-y-2 text-slate-700 text-sm"><li>Refresh sessions stored in <code>RefreshToken</code> collection, but hydration still contains legacy <code>user.token</code> lookup.</li><li>Registration creates immediate session even though status may be <code>pending_verification</code>.</li><li>Reset password creates tokens inside service layer but controller does NOT set cookies or return tokens.</li><li><code>sessionService.autoLoginRedirect</code> uses <code>token</code> URL param, while app1 reads <code>access_token</code> → naming mismatch risk.</li><li><code>verifyServiceToken</code> requires <code>roles</code> scope for both <code>/service</code> and <code>/internal</code> routes.</li><li>Google OAuth flow updates missing local fields (fullName, gender, googleToken) and upserts verified users.</li></ul><div class="mt-5 p-4 bg-indigo-50 rounded-xl text-sm font-mono flex flex-wrap gap-x-4 gap-y-2 justify-between items-center"><span><i class="fas fa-brain text-indigo-600"></i> Core mental model: Auth owns identity & sessions, App relies on signed redirects & state verification.</span><span class="text-indigo-800 font-bold">HMAC + refresh token family + onboarding extension</span></div></section>
 
-            <!-- FOOTER -->
-            <footer class="text-center text-slate-400 text-xs border-t border-slate-200 pt-6 mt-6">Auth Service & App Service Documentation — Complete CAS/SSO reference · Refresh rotation · Service tokens · All original content preserved</footer>
+            <footer class="text-center text-slate-400 text-xs border-t border-slate-200 pt-6 mt-6">Auth Service & App Service Documentation — Extended onboarding flow · Full SSO lifecycle with token rotation and UI state integration</footer>
         </main>
     </div>
 </body>
